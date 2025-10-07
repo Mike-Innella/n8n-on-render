@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: n8n
+    env: docker
+    plan: starter             # you can change later
+    autoDeploy: true
+    disk:
+      name: n8n_data
+      mountPath: /home/node/.n8n
+      sizeGB: 10
+    envVars:
+      - key: N8N_BASIC_AUTH_ACTIVE
+        value: "true"
+      - key: N8N_BASIC_AUTH_USER
+        value: admin
+      - key: N8N_BASIC_AUTH_PASSWORD
+        generateValue: true
+      - key: N8N_BLOCK_ENV_ACCESS_IN_NODE
+        value: "false"        # <-- this unlocks $env in nodes
+      - key: N8N_ENCRYPTION_KEY
+        generateValue: true   # used to encrypt credentials at rest
+      - key: GENERIC_TIMEZONE
+        value: America/New_York
+      # we’ll set these in Render dashboard as secrets after deploy:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: ELEVENLABS_API_KEY
+        sync: false
+      - key: LUMA_API_KEY
+        sync: false
